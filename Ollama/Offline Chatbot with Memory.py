@@ -4,11 +4,9 @@ from tkinter import scrolledtext, messagebox
 from tkinter import *
 import tkinter as tk
 
-# Create/connect to SQLite database
 conn = _sqlite3.connect("chathistory.db")
 c = conn.cursor()
 
-# Ensure the table exists
 c.execute("""
 CREATE TABLE IF NOT EXISTS history (
     user_input TEXT,
@@ -43,17 +41,14 @@ class Window:
 
         model = "llama3.3:latest"
 
-        # Fetch existing history
         c.execute("SELECT * FROM history")
         rows = c.fetchall()
 
-        # Convert history into Ollama format
         conversation_history = []
         for row in rows:
             conversation_history.append({"role": "user", "content": row[0]})
             conversation_history.append({"role": "assistant", "content": row[1]})
 
-        # Add current user message
         conversation_history.append({"role": "user", "content": user_input})
 
         try:
@@ -63,17 +58,14 @@ class Window:
             messagebox.showerror("AI Error", f"Failed to get response from model.\n\n{e}")
             return
 
-        # Display user and AI message
         self.chat_display.config(state='normal')
         self.chat_display.insert(tk.END, "You: " + user_input + "\n")
         self.chat_display.insert(tk.END, "AI: " + ai_reply + "\n\n")
         self.chat_display.config(state='disabled')
         self.chat_display.see(tk.END)
 
-        # Clear input
         self.input.delete(0, tk.END)
 
-        # Save to DB
         c.execute("INSERT INTO history VALUES (?, ?)", (user_input, ai_reply))
         conn.commit()
 
