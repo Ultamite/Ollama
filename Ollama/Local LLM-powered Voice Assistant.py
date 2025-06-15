@@ -5,9 +5,8 @@ import pyttsx3
 import tempfile
 import os
 
-# Initialize components
 recognizer = sr.Recognizer()
-model = whisper.load_model("base")  # You can change to "tiny", "small", etc.
+model = whisper.load_model("base")
 engine = pyttsx3.init()
 engine.setProperty('rate', 175)
 
