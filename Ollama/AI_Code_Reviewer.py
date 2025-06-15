@@ -5,11 +5,6 @@ import tkinter as tk
 
 model = "deepseek-coder:latest"
 
-
-#C:\Users\Architect\OneDrive\Documents\Coding and programing\Python\Apps\AI\AL-AN.py
-
-
-
 class Window:
     def __init__(self,root):
         self.root = root
