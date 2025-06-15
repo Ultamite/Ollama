@@ -7,10 +7,8 @@ import email
 from email.header import decode_header
 import ssl
 
-# ========== CONFIGURATION ==========
-ENABLE_EMAIL_INTEGRATION = False  # Set True if you want to fetch from real email
+ENABLE_EMAIL_INTEGRATION = False  
 
-# ========== OLLAMA RESPONSE GENERATOR ==========
 def generate_reply(email_text, tone):
     prompt = f"""
 You are an AI trained to generate email replies.
@@ -27,7 +25,6 @@ Reply:
     except Exception as e:
         return f"Error generating reply: {str(e)}"
 
-# ========== EMAIL FETCHING ==========
 def fetch_latest_email(username, password):
     try:
         mail = imaplib.IMAP4_SSL("imap.gmail.com")
@@ -54,33 +51,27 @@ def fetch_latest_email(username, password):
     except Exception as e:
         return f"Error fetching email: {str(e)}"
 
-# ========== GUI ==========
 class EmailApp:
     def __init__(self, root):
         self.root = root
         self.root.title("AI Email Reply Generator")
         self.root.geometry("900x600")
 
-        # Received Email
         tk.Label(root, text="Received Email:", font=("Arial", 12, "bold")).pack()
         self.input_text = tk.Text(root, height=10, width=100)
         self.input_text.pack()
 
-        # Tone Selection
         tk.Label(root, text="Select Tone:", font=("Arial", 12)).pack(pady=(10, 0))
         self.tone = ttk.Combobox(root, values=["Formal", "Casual", "Apologetic", "Friendly", "Professional"])
         self.tone.current(0)
         self.tone.pack()
 
-        # Generate Button
         tk.Button(root, text="Generate Reply", command=self.generate).pack(pady=10)
 
-        # Output
         tk.Label(root, text="Generated Reply:", font=("Arial", 12, "bold")).pack()
         self.output_text = tk.Text(root, height=10, width=100, bg="#f4f4f4")
         self.output_text.pack()
 
-        # Email integration (optional)
         if ENABLE_EMAIL_INTEGRATION:
             self.email_frame = tk.Frame(root)
             self.email_frame.pack(pady=10)
@@ -112,7 +103,6 @@ class EmailApp:
         self.input_text.delete("1.0", tk.END)
         self.input_text.insert(tk.END, fetched)
 
-# ========== RUN ==========
 if __name__ == "__main__":
     root = tk.Tk()
     app = EmailApp(root)
